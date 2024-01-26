@@ -1,0 +1,259 @@
+*****DATA BASE MANAGEMENT SYSTEM*******
+
+SQL- structured theory language(a progrraming language used to interact with relational databases.
+
+Used to perform CRUD operations.
+Create, Read, Update, Delete
+
+DDL(Data Definition language):create, alter, rename,truncate & drop
+
+DQL(Data Query Language):select
+
+DML(Data manipulation language):insert,update, & delete
+DCL(Data control language):grant & revoke permissions to users
+
+TCL(Transaction control language):Start transaction,commit,rollback
+
+
+PRIMARY KEY:It is a column (or set of columns) in  table that uniquely identifies each row.(a unique id).there is only one primary key and it should not be null.
+
+
+FOREIGN KEY:It is a column (or set of columns) in a table that refers to the primary key of another table.
+there can be multiple foreign keys. foreign keys can have duplicates and null values.  
+
+SQL constraints are used to specify rules for data in a table. 
+NOTNULL:columns cannot have NULL VALUE
+UNIQUE:all values in columns are different
+PRIMARY KEY: makes a column unique and not null but used only for one   
+
+
+WHERE clause: used to define some condition.
+SELECT col1,col2 FROM table_name WHERE conditions;
+For example:SELECT * FROM student WHERE marks>80;
+SELECT * FROM student WHERE city="Mumbai";
+
+
+ Operators in WHERE CLAUSE
+Airthmetic operators: addition ,subraction , multiplication,division,modulus
+comparison operators : equal to,not equal to,>,>=,<,<=
+Logical opeartors : AND , OR, NOT , IN , BETWEEN , ALL , LIKE , ANY
+Bitwise operators: &(Bitwise AND),|(bitwise OR)
+
+
+OPERATORS
+BETWEEN (Selects for a given range)
+SELECT * FROM student WHERE marks BETWEEN 80 AND 90;
+
+IN (matches any value in the list)
+SELECT * FROM student WHERE city IN ("delhi","Mumbai");
+
+NOT (to negate the given condition)
+SELECT * FROM student WHERE city NOT IN("delhi","MUmbai");
+
+
+LIMIT CLAUSE : Sets an upper limit on number of(tuples)rows to be returned
+SELECT * FROM student LIMIT 3;
+
+
+ORDERBY CLAUSE :
+TO sort in ascending or descending order
+SELECT * FROM student ORDER BY city ASC;
+
+
+AGGREGATE FUNCTIONS
+aggregate function perform a calculation on a set of values and return a single value.
+COUNT()  MAX() MIN() SUM() AVG()
+
+GET MAXIMUM MARKS: SELECT max(marks) FROM student;
+GET AVERAGE MARKS: SELECT avg(marks) FROM student; 
+
+
+GROUP BY CLAUSE
+Groups rows that have the same values into summary rows.
+It collects data from multiple records and groups the result by one or more column.
+
+Generally we use group by with some aggregation function.
+Count number of students in each city
+SELECT city ,count(name) FROM student GROUP BY city;
+
+
+HAVING CLAUSE
+Similar to Where that is applies some condition on rows
+used when we want to apply any condition after grouping.
+
+count number of students in each city where max marks cross 90
+SELECT count(name),city FROM students GROUP BY city HAVING max(marks)>90;
+
+GENERAL ORDER
+SELECT (columns)
+FROM (table_name)
+WHERE (condition)
+GROUP BY (columns)
+HAVING condition
+ORDER BY columns ASC;
+
+
+TABLE RELATED QUERIES
+UPDATE:(to update existing rows)
+UPDATE table_name SET col1=val1,col2=val2 WHERE condition;
+
+ DELETE:(to delete existing rows)
+DELETE FROM table_name WHERE condition;
+DELETE FROM student WHERE marks<33; 
+
+CASCADING FOR FOREIGN KEYS(if there is change in one place so that change must also be happen other connected place also)
+On delete cascade
+When we create a foreign key using this option ,it deletes the referencing rows in the child table when the referenced row is deleted in the parent table which has a primary key.
+
+On update cascade
+when we delete  foreign key using UPDATE CASCADE the referencing rows are updated in the child table when the referenced row is upadated in the parent table which has a primary key.
+ 
+
+ALTER(to change the schema)
+ ADD column
+ALTER TABLE table_name 
+ADD COLUMN column_name datatype constraint;
+
+DROP column
+ALTER TABLE table_name
+DROP COLUMN column_name;
+
+RENAME TABLE
+ALTER TABLE table_name
+RENAME TO new_table_name; 
+
+CHANGE Column(rename)
+ALTER TABLE table_name
+CHANGE COLUMN old_name new_name new_datatype new_constraint;
+
+MODIFY Column(modify datatype/constraint)
+ALTER TABLE table_name
+MODIFY col_name new_datatype new_constraint;
+
+TRUNCATE (to delete tables data)
+TRUNCATETABLE table_name;
+
+DIFFERENCE BETWEEN DROP AND TRUNCATE
+DROP delete the whole table
+TRUNCATE delete the data of the table
+
+
+JOINS IN SQL
+join is used to combine rows from two or more tables,based on a related column between them
+
+TYPES OF JOINS
+inner join (leftjoin rightjoin fulljoin)=outer join
+
+INNER JOIN: TWO TABLES HAVING COMMON DATA BETWEEN THEM
+LEFT JOIN:FULL DATA OF LEFT TABLE + COMMON DATA OF RIGHT TABLE
+
+RIGHT JOIN:COMMON DATA OF LEFT TABLE + FULL DATA OF RIGHT TABLE
+
+FULL JOIN:FULL DATA OF BOTH THE TABLES
+
+DEFINITION:
+INNER JOIN: Returns records that have matching values in both tables
+SELECT columns
+FROM tableA
+INNERJOIN tableB
+ON tableA.col_name=tableB.col_name;
+we can use aliases also aliases are columns short name use with keyword AS
+for example:
+SELECT *
+FROM student AS s
+INNRJOIN course AS c
+ON s.id=c.id;  
+
+
+LEFT JOIN: Returns all records from the left table and the matched records from the right table
+SELECT *
+FROM tableA
+LEFT JOIN tableB
+ON tableA.col_name=tableB.col_name;
+
+
+RIGHT JOIN : Returns all records from the right table and the matched records from the left table
+SELECT *
+FROM tableA
+RIGHT JOIN tableB
+ON tableA.col_name=tableB.col_name;
+
+ 
+FULL JOIN:returns alll records when there is a match in either left or right table
+RIGHT JOIN +LEFT JOIN=FULL JOIN
+SYNTAX:
+SELECT * FROM student
+LEFT JOIN course
+ON student.id=course.id
+UNION
+SELECT * FROM student
+RIGHT JOIN course
+ON student.id=course.id;  
+
+
+LEFT EXCLUSIVE JOIN:
+data of only left table is present excluding the common part between two tables.
+
+SELECT *
+FROM student AS a
+LEFT JOIN course AS b
+ON a.id=b.id
+WHERE b.id is null;
+
+RIGHT EXCLUSIVE JOIN:
+data of only right table is present excluding the common part between two tables.
+
+SELECT *
+FROM student AS a
+RIGHT JOIN course AS b
+ON a.id=b.id
+WHERE a.id is null; 
+
+FULL EXCLUSIVE JOIN:
+data of right table and left table is present except common part between two tables
+
+SELF JOIN
+it is a regular join but the table is joined with itself
+
+SYNTAX:
+SELECT column
+FROM table AS a
+JOIN table AS b
+ON a.col_name=b.col_name; 
+
+UNION :
+it is used to combine the result set of two or more SELECT statements
+Gives UNIQUE RECORDS
+
+TO USE IT FOLLOWING CONDITION ARE THERE
+every SELECT should have same number of columns
+columns must have similar data types
+columns in every SELECT should be in same order
+
+Syntax:
+SELECT columns FROM tableA
+UNION
+SELECT columns FROM tableB  
+
+UNION ALL gives duplicate values also this is the basic diffrence between UNION and UNION ALL.
+
+SQL Sub Queries
+A subquery or innerquery or  nested query is a query within a SQL query.
+It involves 2 select statements.
+
+Syntax:
+SELECT columns
+FROM table_name
+WHERE col_name operator
+(subquery); 
+
+
+MY SQL Views
+A view is a virtual table based on the result-set of an SQL statement
+
+CREATE VIEW view1 AS
+SELECT rollno,name FROM student;
+
+SELECT * FROM view1;
+
+note*** : A view always shows up-to-date data .The database engine recreates the view ,everytime a user queries it.
